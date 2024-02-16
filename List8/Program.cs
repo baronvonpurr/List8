@@ -4,50 +4,42 @@ namespace List8
 {
     class Program
     {
-        static void Main(string[] args)
+        static char decodechar(char letter, Dictionary<char, char> translation)
         {
-            int error = 0;
-            int loop = 0;
-            string actinp;
-            string message;
-            string actcode;
-            Console.WriteLine("Hur många koder vill du skriva in?");
-            loop = int.Parse(Console.ReadLine());
-            string[] codes = new string[loop];
-            for (int i = 0; i < loop; i++)
+            while (true)
             {
-                Console.WriteLine("Skriv in kod");
-                actinp = Console.ReadLine();
-                codes[i] = actinp;
-            }
-            Console.WriteLine("Skriv in ditt hemliga medellande");
-            message = Console.ReadLine();
-            for (int i = 0;i < message.Length; i++)
-            {
-                Console.WriteLine("check 1");
-                while (true)
+                if (translation.ContainsKey(letter))
                 {
-                    for (int j = 0; j < codes[i].Length; j++)
-                    {
-                        actcode = codes[j];
-                        if (message[i] == actcode[1])
-                        {
-                            message = actcode[3] + message.Substring(1);
-                            error = 0;
-                            Console.WriteLine("Check 2");
-                        }
-                        else
-                        {
-                            error++;
-                        }
-                        if(error == codes[i].Length)
-                        {
-                            break;
-                        }
-                    }
+                    letter = translation[letter];
+                }
+                else
+                {
+                    break;
                 }
             }
-            Console.WriteLine(message);
+            return letter;
+        }
+        static void Main(string[] args)
+        {
+            Dictionary<char, char> converter = new Dictionary<char, char>();
+            int koder;
+            string read;
+            string input;
+            string output = "";
+            Console.WriteLine("Hur många koder vill du ha?");
+            koder = int.Parse(Console.ReadLine());
+            for (int i = 0; i < koder; i++)
+            {
+                read = Console.ReadLine();
+                converter[read[0]] = read[2];
+            }
+            Console.WriteLine("Skriv in det du vill översätta");
+            input = Console.ReadLine();
+            foreach (char key in input)
+            {
+                output += decodechar(key, converter);
+            }
+            Console.WriteLine(output);
         }
     }
 }
